@@ -7,6 +7,7 @@ body {
     height: 100vh;
     margin: 0;                   
     background-color: rgb(71, 8, 100);
+    overflow: hidden;
 }
 
 .score-container {
@@ -73,9 +74,13 @@ body {
     margin-top: 10px;
 }
 
+.game-over {
+    display: none;
+
+}
+
 .game-over button:hover {
     background-color: rgb(100, 20, 140);
-    display: none;
 }
 .restart-game{
     background-color: rgb(71, 8, 100);

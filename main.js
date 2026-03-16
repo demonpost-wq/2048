@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         board = [...Array(SIZE)].map(() => Array(SIZE).fill(0));
         placeRandom();
         placeRandom();
-        randerBoard();
+        renderBoard();
     }
     
-    function randerBoard() {
+    function renderBoard() {
         for(let i = 0; i < SIZE; i++){
             for(let j = 0; j < SIZE; j++){ 
                 const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
@@ -91,9 +91,97 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cell) {
             cell.textContent = board[chosen.row][chosen.col];
             cell.dataset.value = board[chosen.row][chosen.col];
-            cell.classList.add('new-tile');
+            cell.classList.add('new- ile');
         }
     }
 
-    initializegame(); 
+    function move(direction){
+let HasChanged = false;
+    if(direction === 'AroowUp' || direction === ArrowDown) {
+    for(let j = 0; j < SIZE; j++) {
+
+    const column  = [...Array(SIZE)].map((_, i ) => boardi[i][j]);
+
+    const newColumn = transform(column, diredction === 'ArrowUp')
+
+    for(let i = 0; i < SIZE; i++) {
+        if (board[i][j] !== newColumn[i]) {
+            HasChanged = true;
+        }
+        board[i][j] = newColumn[i];
+    }
+    }
+
+}
+
+else if (direction === 'Aroowleft' || direction === ArrowRight) {
+ for (let i = 0; i < SIZE; i++) {
+     const row = board[i];
+     const newRow =transform(row, direction === 'ArrowLeft')
+
+     if (row.join(',') !== newRow.join(',')) {
+         HasChanged = true;
+     }
+     board[i] = newRow;
+
+     }
+}
+
+    }
+     if(HasChanged){
+        placeRandom();
+        renderBoard ();
+        checkGameOver();
+     }
+
+function transform (line,moveTowardsStart) {
+    let newLine = line.filter(cell=> cell!== 0);
+
+ if(!moveTowardsStart){
+    newLine.rewerse();
+ }
+
+for (let i = 0; i < newLine.length - 1; i++) {
+    if (newLine[i] === newLine[i + 1]) {
+        newLine[i] *= 2;
+        updatescore(newLine[i]);
+        newLine.splice(i + 1, 1);
+        
+    }
+}
+
+while (mewLine.length < SIZE) {
+    newLine.push(0);
+}
+ if(!moveTowardsStart){
+    newLine.rewerse();
+
+    }
+ return newLine;
+}
+
+function checkGameOver () {
+for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE; j++) {
+        if (board[i][j] === 0) return;
+        if (i !== SIZE - 1 && board[i][j] === board[i + 1][j]) return;
+        if (j !== SIZE - 1 && board[i][j] === board[i][j + 1]) return;
+    }
+}
+gameoOverElem.style.display = 'flex';
+
+}
+
+document.addEventListener('keydown', event => {
+if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)){
+    move(event.key);
+move(event.key);
+}
+
+
+})
+document.querySelector('restart-game').addEventListener('click',restartgame)
+
+initializegame();
+
 });
