@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let HighScore = localStorage.getItem('2048-HighScore') || 0;
     HighScoreElement.textContent = HighScore;
 
-    // ==================== ADDED: Звуки ====================
     const sounds = {
         move: new Audio('./sounds/move.mp3'),
         merge: new Audio('./sounds/merge.mp3'),
@@ -21,18 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Установим низкую громкость
     Object.values(sounds).forEach(s => s.volume = 0.3);
 
-    // Функция для попытки воспроизвести звук (с автозапуском после взаимодействия)
     function playSound(sound) {
-        sound.play().catch(e => {}); // игнорим ошибки автозапуска
+        sound.play().catch(e => {}); 
     }
 
-    // Активируем звуки при первом нажатии клавиши
     document.addEventListener('keydown', function initAudio() {
         playSound(sounds.move); // просто чтобы разблокировать аудиоконтекст
         document.removeEventListener('keydown', initAudio);
     }, { once: true });
 
-    // ==================== ADDED: Конфетти ====================
     function triggerConfetti() {
         confetti({
             particleCount: 100,
@@ -43,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==================== ADDED: Темы ====================
     const themes = {
         default: {
             bg: 'rgb(71, 8, 100)',
@@ -79,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.style.backgroundColor = t.cell;
             cell.style.color = t.text;
         });
-        // Сохраняем выбранную тему
         localStorage.setItem('2048-theme', themeName);
     }
 
@@ -92,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => setTheme(btn.dataset.theme));
     });
 
-    // ==================== Основные функции игры ====================
 
     function updatescore(value) {
         currentscore += value;
@@ -101,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
             HighScore = currentscore;
             HighScoreElement.textContent = HighScore;
             localStorage.setItem('2048-HighScore', HighScore);
-            // ADDED: конфетти и звук при рекорде
             triggerConfetti();
             playSound(sounds.win);
         }
@@ -150,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Очищаем классы анимации
     setInterval(() => {
         const cells = document.querySelectorAll('.grid-cell');
         cells.forEach(cell => {
@@ -196,95 +187,94 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const newColumn = transform(column, direction === 'ArrowUp');
 
-                for (let i = 0; i < SIZE; i++) {
-                    if (board[i][j] !== newColumn[i]) {
-                        hasChanged = true;
+                restartgame (fori = 0; i < РАЗМЕР; i++) {
+                    если (доска[i][j] !== новыйСтолбец[i]) {
+                        изменился = истинный;
                     }
-                    board[i][j] = newColumn[i];
+                    доска[i][j] = новыйСтолбец[i];
                 }
             }
-        } else if (direction === 'ArrowLeft' || direction === 'ArrowRight') {
-            for (let i = 0; i < SIZE; i++) {
-                const row = [...board[i]];
-                const newRow = transform(row, direction === 'ArrowLeft');
+        } еще если (направление === «Стрелка влево» || направление === «Стрелка вправо») {
+            для (позволять i = 0; i < РАЗМЕР; i++) {
+                константа ряд = [...доска[i]];
+                константа новаяСтрока = трансформировать(ряд, направление === «Стрелка влево»);
 
-                if (row.join(',') !== newRow.join(',')) {
-                    hasChanged = true;
+                если (ряд.присоединиться(',') !== новаяСтрока.присоединиться(',')) {
+                    изменился = истинный;
                 }
-                board[i] = newRow;
+                доска[i] = новаяСтрока;
             }
         }
 
-        if (hasChanged) {
-            // ADDED: звук хода
-            playSound(sounds.move);
+        если (изменился) {
+            playSound(звуки.двигаться);
 
-            // ADDED: визуальный эффект хода (пульсация всех ячеек)
-            for (let i = 0; i < SIZE; i++) {
-                for (let j = 0; j < SIZE; j++) {
-                    const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                    if (cell && board[i][j] !== 0) {
-                        cell.classList.add('move-tile');
-                        setTimeout(() => cell.classList.remove('move-tile'), 150);
+    
+            для (позволять i = 0; i < РАЗМЕР; i++) {
+                для (позволять j = 0; j < РАЗМЕР; j++) {
+                    константа клетка = документ.querySelector(`[строка данных="${i}"][data-col="${j}"]`);
+                    если (клетка && доска[i][j] !== 0) {
+                        клетка.список классов.добавлять(«переместить плитку»);
+                        setTimeout(() => клетка.список классов.удалять(«переместить плитку»), 150);
                     }
                 }
             }
 
-            placeRandom();
+            местоСлучайный();
             renderBoard();
-            checkGameOver();
+            проверитьGameOver();
         }
     }
 
-    function transform(line, moveTowardsStart) {
-        let newLine = line.filter(cell => cell !== 0);
+    функция трансформировать(линия, двигатьсяК началу) {
+        позволять новаяЛиния = линия.фильтр(клетка => клетка !== 0);
 
-        if (!moveTowardsStart) {
-            newLine.reverse();
+        если (!двигатьсяК началу) {
+            новаяЛиния.обеспечить регресс();
         }
 
-        for (let i = 0; i < newLine.length - 1; i++) {
-            if (newLine[i] === newLine[i + 1]) {
-                newLine[i] *= 2;
-                updatescore(newLine[i]);
-                newLine.splice(i + 1, 1);
-                // ADDED: звук слияния
-                playSound(sounds.merge);
+        для (позволять i = 0; i < новаяЛиния.длина - 1; i++) {
+            если (новаяЛиния[i] === новаяЛиния[i + 1]) {
+                новаяЛиния[i] *= 2;
+                обновленияcore(новаяЛиния[i]);
+                новаяЛиния.сращивание(i + 1, 1);
+
+                playSound(звуки.слияние);
             }
         }
 
-        while (newLine.length < SIZE) {
-            newLine.push(0);
+        пока (новаяЛиния.длина < РАЗМЕР) {
+            новаяЛиния.толкать(0);
         }
 
-        if (!moveTowardsStart) {
-            newLine.reverse();
+        если (!двигатьсяК началу) {
+            новаяЛиния.обеспечить регресс();
         }
 
-        return newLine;
+        возвращаться новаяЛиния;
     }
 
-    function checkGameOver() {
-        for (let i = 0; i < SIZE; i++) {
-            for (let j = 0; j < SIZE; j++) {
-                if (board[i][j] === 0) return false;
-                if (i < SIZE - 1 && board[i][j] === board[i + 1][j]) return false;
-                if (j < SIZE - 1 && board[i][j] === board[i][j + 1]) return false;
+    функция проверитьGameOver() {
+        для (позволять i = 0; i < РАЗМЕР; i++) {
+            для (позволять j = 0; j < РАЗМЕР; j++) {
+                если (доска[i][j] === 0) возвращаться ложный;
+                если (i < РАЗМЕР - 1 && доска[i][j] === доска[i + 1][j]) возвращаться ложный;
+                если (j < РАЗМЕР - 1 && доска[i][j] === доска[i][j + 1]) возвращаться ложный;
             }
         }
-        gameOverElem.style.display = 'flex';
-        return true;
+        играOverElem.стиль.отображать = 'гибкий';
+        возвращаться истинный;
     }
 
-    document.addEventListener('keydown', event => {
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-            event.preventDefault();
-            move(event.key);
+    документ.addEventListener('клавиша вниз', событие => {
+        если ([«Стрелка вверх», «СтрелкаВниз», «Стрелка влево», «Стрелка вправо»].включает в себя(событие.ключ)) {
+            событие.предотвратитьПо умолчанию();
+            двигаться(событие.ключ);
         }
     });
 
-    if (restartBtn) {
-        restartBtn.addEventListener('click', restartgame);
+    если (перезапускBtn) {
+        перезапускBtn.addEventListener('нажмите', перезапустить игру);
     }
 
     initializegame();
