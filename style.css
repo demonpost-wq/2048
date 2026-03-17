@@ -1,4 +1,3 @@
-/* Сброс box-sizing для всех элементов */
 * {
     box-sizing: border-box;
 }
@@ -16,7 +15,6 @@ body {
     position: relative;
 }
 
-/* Анимированный фон с кубиками */
 body::before {
     content: '';
     position: absolute;
@@ -39,13 +37,11 @@ body::before {
     100% { background-position: 60px 60px, 60px 90px; }
 }
 
-/* Чтобы контент был выше фона */
 .score-container, .game-container, .game-over, .theme-selector {
     position: relative;
     z-index: 1;
 }
 
-/* Контейнер счёта */
 .score-container {
     display: flex;
     justify-content: space-between;
@@ -75,17 +71,16 @@ body::before {
     color: #ffd966;
 }
 
-/* Игровой контейнер */
 .game-container {
     width: 335px;
     height: 335px;
     border: 1px solid #250a22;
     background-color: #3d1a33;
-    border-radius: 10px;           /* добавил скругление */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* тень для глубины */
+    border-radius: 10px;           
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
 }
 
-/* Сетка */
+
 .game-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -95,32 +90,32 @@ body::before {
     height: 100%;
 }
 
-/* Ячейки плиток */
+
 .grid-cell {
-    width: 100%;                   /* занимает всю доступную ширину в grid */
-    height: 100%;                  /* занимает всю высоту */
+    width: 100%; 
+    height: 100%; 
     background-color: rgb(85, 0, 40);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26px;               /* чуть увеличил для красоты */
+    font-size: 26px; 
     color: white;
     font-weight: bold;
-    border-radius: 8px;            /* скругление уголков */
+    border-radius: 8px;  
     transition: all 0.15s ease;
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3); /* внутренняя и внешняя тень для разделения */
-    border: 1px solid rgba(255,255,255,0.1); /* тонкая граница для контраста */
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3); 
+    border: 1px solid rgba(255,255,255,0.1); 
     line-height: 1;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* тень текста */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
 }
 
-/* Анимация при ходе */
+
 .grid-cell.move-tile {
     transform: scale(1.1);
     background-color: rgba(255,255,255,0.2);
 }
 
-/* Анимация появления */
+
 .grid-cell.new-tile {  
     animation: spawntitle 0.2s ease-out;
 }
@@ -136,7 +131,7 @@ body::before {
     }
 }
 
-/* Анимация слияния (можно добавить отдельно) */
+
 .grid-cell.merged-tile {
     animation: merge 0.2s ease-out;
 }
@@ -147,7 +142,7 @@ body::before {
     100% { transform: scale(1); }
 }
 
-/* Game Over */
+
 .game-over {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.85);
@@ -198,7 +193,7 @@ body::before {
     margin-top: 10px;
 }
 
-/* Переключатель тем */
+
 .theme-selector {
     display: flex;
     gap: 8px;
