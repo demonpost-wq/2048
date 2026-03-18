@@ -1,4 +1,3 @@
-/* Сброс box-sizing для всех элементов */
 * {
     box-sizing: border-box;
 }
@@ -11,12 +10,11 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
-    background-color: rgb(71, 8, 100);
     overflow: hidden;
     position: relative;
+    transition: background-color 0.3s;
 }
 
-/* Анимированный фон с кубиками */
 body::before {
     content: '';
     position: absolute;
@@ -39,17 +37,142 @@ body::before {
     100% { background-position: 60px 60px, 60px 90px; }
 }
 
-/* Чтобы контент был выше фона */
-.score-container, .game-container, .game-over, .theme-selector {
+.menu-screen, .game-screen, .score-container, .game-container, .game-over {
     position: relative;
     z-index: 1;
 }
 
-/* Контейнер счёта */
+.menu-screen {
+    text-align: center;
+    color: white;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    padding: 30px 40px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.menu-screen h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.themes-toggle {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.theme-selector {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0;
+    background: rgba(0,0,0,0.6);
+    border-radius: 20px;
+    padding: 15px;
+}
+
+.theme-selector.show {
+    display: flex;
+}
+
+.theme-selector button {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 30px;
+    padding: 10px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.play-button {
+    background: #ffb347;
+    border: none;
+    border-radius: 60px;
+    padding: 15px 40px;
+    font-size: 28px;
+    font-weight: 800;
+    color: #2d1b3c;
+    cursor: pointer;
+    box-shadow: 0 8px 0 #b15d1a;
+    transition: 0.1s;
+    margin-top: 15px;
+}
+
+.play-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 11px 0 #b15d1a;
+}
+
+.play-button:active {
+    transform: translateY(5px);
+    box-shadow: 0 3px 0 #b15d1a;
+}
+
+.settings-button {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-panel {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 15px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    flex-direction: column;
+    gap: 15px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.settings-panel.show {
+    display: flex;
+}
+
+.settings-panel label {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    gap: 5px;
+}
+
+.game-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
 .score-container {
     display: flex;
     justify-content: space-between;
-    width: 335px;
+    width: 340px;
     margin-bottom: 20px;
 }
 
@@ -75,17 +198,15 @@ body::before {
     color: #ffd966;
 }
 
-/* Игровой контейнер */
 .game-container {
-    width: 335px;
-    height: 335px;
+    width: 340px;
+    height: 340px;
     border: 1px solid #250a22;
-    background-color: #3d1a33;
-    border-radius: 10px;           /* добавил скругление */
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* тень для глубины */
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    transition: background-color 0.3s;
 }
 
-/* Сетка */
 .game-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -95,61 +216,79 @@ body::before {
     height: 100%;
 }
 
-/* Ячейки плиток */
 .grid-cell {
-    width: 100%;                   /* занимает всю доступную ширину в grid */
-    height: 100%;                  /* занимает всю высоту */
-    background-color: rgb(85, 0, 40);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 26px;               /* чуть увеличил для красоты */
-    color: white;
+    font-size: 26px;
     font-weight: bold;
-    border-radius: 8px;            /* скругление уголков */
+    border-radius: 8px;
     transition: all 0.15s ease;
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3); /* внутренняя и внешняя тень для разделения */
-    border: 1px solid rgba(255,255,255,0.1); /* тонкая граница для контраста */
-    line-height: 1;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* тень текста */
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    aspect-ratio: 1/1;
 }
 
-/* Анимация при ходе */
 .grid-cell.move-tile {
     transform: scale(1.1);
     background-color: rgba(255,255,255,0.2);
 }
 
-/* Анимация появления */
 .grid-cell.new-tile {  
     animation: spawntitle 0.2s ease-out;
 }
 
 @keyframes spawntitle {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
 }
 
-/* Анимация слияния (можно добавить отдельно) */
-.grid-cell.merged-tile {
-    animation: merge 0.2s ease-out;
+.grid-cell.merge-target {
+    animation: merge-target 0.8s ease-out;
 }
 
-@keyframes merge {
+@keyframes merge-target {
     0% { transform: scale(1); }
-    50% { transform: scale(1.2); background-color: rgba(255,255,255,0.3); }
+    50% { transform: scale(1.3); background-color: var(--merge-color, #ffb3ff); }
     100% { transform: scale(1); }
 }
 
-/* Game Over */
+.grid-cell.merge-source {
+    animation: merge-source 0.8s ease-out;
+}
+
+@keyframes merge-source {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.7); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+.menu-button {
+    background: var(--button-bg, #4a1a6b);
+    border: none;
+    border-radius: 40px;
+    padding: 8px 25px;
+    font-size: 18px;
+    color: white;
+    margin-top: 15px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.menu-button:hover {
+    background: var(--button-hover, #6a2a8b);
+    transform: scale(1.05);
+}
+
 .game-over {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.85);
     color: white;
     padding: 25px 35px;
@@ -160,24 +299,27 @@ body::before {
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,255,255,0.2);
     z-index: 10;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
 }
 
 .game-over button {
-    background-color: rgb(71, 8, 100);
+    background-color: var(--button-bg, #4a1a6b);
     color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 30px;
     cursor: pointer;
     font-size: 18px;
-    margin-top: 15px;
     font-weight: bold;
     transition: background-color 0.2s, transform 0.1s;
     box-shadow: 0 4px 0 #3a044a;
+    min-width: 120px;
 }
 
 .game-over button:hover {
-    background-color: rgb(100, 20, 140);
+    background-color: var(--button-hover, #6a2a8b);
     transform: translateY(-2px);
     box-shadow: 0 6px 0 #3a044a;
 }
@@ -185,38 +327,4 @@ body::before {
 .game-over button:active {
     transform: translateY(2px);
     box-shadow: 0 2px 0 #3a044a;
-}
-
-.restart-game {
-    background-color: rgb(71, 8, 100);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-/* Переключатель тем */
-.theme-selector {
-    display: flex;
-    gap: 8px;
-    margin-top: 15px;
-}
-.theme-selector button {
-    background: rgba(255,255,255,0.2);
-    border: none;
-    border-radius: 30px;
-    padding: 10px 15px;
-    font-size: 22px;
-    cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255,255,255,0.2);
-}
-.theme-selector button:hover {
-    background: rgba(255,255,255,0.4);
-    transform: scale(1.15);
 }

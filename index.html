@@ -3,54 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ADDED: шрифт Nunito -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>2048</title>
 </head>
 <body>
 
-    <!-- ADDED: правильный контейнер для счёта (был пустой div) -->
-    <div class="score-container">
-        <div class="score-box">Score <span class="current-score">0</span></div>
-        <div class="score-box">Best <span class="High-Score">0</span></div>
-    </div>
-
-    <div class="game-container">
-        <div class="game-grid">             
-            <div class="grid-cell" data-row="0" data-col="0"></div>
-            <div class="grid-cell" data-row="0" data-col="1"></div>
-            <div class="grid-cell" data-row="0" data-col="2"></div>
-            <div class="grid-cell" data-row="0" data-col="3"></div>
-            <div class="grid-cell" data-row="1" data-col="0"></div>
-            <div class="grid-cell" data-row="1" data-col="1"></div>
-            <div class="grid-cell" data-row="1" data-col="2"></div>
-            <div class="grid-cell" data-row="1" data-col="3"></div>
-            <div class="grid-cell" data-row="2" data-col="0"></div>
-            <div class="grid-cell" data-row="2" data-col="1"></div>
-            <div class="grid-cell" data-row="2" data-col="2"></div>
-            <div class="grid-cell" data-row="2" data-col="3"></div>
-            <div class="grid-cell" data-row="3" data-col="0"></div>
-            <div class="grid-cell" data-row="3" data-col="1"></div>
-            <div class="grid-cell" data-row="3" data-col="2"></div>
-            <div class="grid-cell" data-row="3" data-col="3"></div>
+    <div class="menu-screen">
+        <h1>🎮 2048</h1>
+        <div style="position: relative;">
+            <button class="themes-toggle">🎨 Themes</button>
+            <div class="theme-selector">
+                <button data-theme="default">🌌 Cosmic</button>
+                <button data-theme="animals">🐾 Animals</button>
+                <button data-theme="food">🍕 Pizza</button>
+                <button data-theme="soft">🌸 Soft</button>
+            </div>
+        </div>
+        <button class="play-button">▶ Play</button>
+        <button class="settings-button">⚙️</button>
+        <div class="settings-panel">
+            <label>Music <input type="range" id="musicVolume" min="0" max="100" value="50"></label>
+            <label>SFX <input type="range" id="sfxVolume" min="0" max="100" value="50"></label>
         </div>
     </div>
 
-    <div class="game-over">
-        Game Over! 
-        <button class="restart-game">restart game</button>
+    <div class="game-screen" style="display: none;">
+        <div class="score-container">
+            <div class="score-box">Score <span class="current-score">0</span></div>
+            <div class="score-box">Best <span class="High-Score">0</span></div>
+        </div>
+
+        <div class="game-container">
+            <div class="game-grid">             
+                <div class="grid-cell" data-row="0" data-col="0"></div>
+                <div class="grid-cell" data-row="0" data-col="1"></div>
+                <div class="grid-cell" data-row="0" data-col="2"></div>
+                <div class="grid-cell" data-row="0" data-col="3"></div>
+                <div class="grid-cell" data-row="1" data-col="0"></div>
+                <div class="grid-cell" data-row="1" data-col="1"></div>
+                <div class="grid-cell" data-row="1" data-col="2"></div>
+                <div class="grid-cell" data-row="1" data-col="3"></div>
+                <div class="grid-cell" data-row="2" data-col="0"></div>
+                <div class="grid-cell" data-row="2" data-col="1"></div>
+                <div class="grid-cell" data-row="2" data-col="2"></div>
+                <div class="grid-cell" data-row="2" data-col="3"></div>
+                <div class="grid-cell" data-row="3" data-col="0"></div>
+                <div class="grid-cell" data-row="3" data-col="1"></div>
+                <div class="grid-cell" data-row="3" data-col="2"></div>
+                <div class="grid-cell" data-row="3" data-col="3"></div>
+            </div>
+        </div>
+
+        <button class="menu-button">📋 Menu</button>
+
+        <div class="game-over">
+            Game Over! 
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="restart-game-btn">🔄 Restart</button>
+                <button class="restart-game">🏠 Menu</button>
+            </div>
+        </div>
     </div>
 
-    <!-- ADDED: переключатель тем -->
-    <div class="theme-selector">
-        <button data-theme="default">🌌</button>
-        <button data-theme="animals">🐾</button>
-        <button data-theme="food">🍕</button>
-        <button data-theme="soft">🌸</button>
-    </div>
-
-    <!-- ADDED: библиотека конфетти -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <script src="main.js"></script>
 </body>
