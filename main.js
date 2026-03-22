@@ -19,6 +19,35 @@ document.addEventListener('DOMContentLoaded', () => {
     let HighScore = localStorage.getItem('2048-HighScore') || 0;
     HighScoreElement.textContent = HighScore;
 
+    function playSound(type) {
+        const sfxVolInput = document.getElementById('sfxVolume');
+        const vol = sfxVolInput ? parseFloat(sfxVolInput.value) / 100 : 0.5;
+        
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.type = 'sine';
+            
+            if (type === 'move') oscillator.frequency.value = 300;
+            else if (type === 'merge') oscillator.frequency.value = 600;
+            else if (type === 'win') oscillator.frequency.value = 800;
+            
+            gainNode.gain.value = vol * 0.2;
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.1);
+        } catch (e) {
+            console.log('AudioContext blocked or failed');
+        }
+    }
+
+    document.addEventListener('keydown', function initAudio() {
+        playSound('move');
+        document.removeEventListener('keydown', initAudio);
+    }, { once: true });
+
     const themes = {
         default: {
             bg: 'rgb(71, 8, 100)',
@@ -60,8 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setTheme(themeName) {
         const t = themes[themeName];
+        if (!t) return;
         document.body.style.backgroundColor = t.bg;
-        document.querySelector('.game-container').style.backgroundColor = t.container;
+        const container = document.querySelector('.game-container');
+        if (container) container.style.backgroundColor = t.container;
+        
         document.querySelectorAll('.grid-cell').forEach(cell => {
             cell.style.backgroundColor = t.cell;
             cell.style.color = t.text;
@@ -89,14 +121,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function showMenu() {
         menuScreen.style.display = 'block';
         gameScreen.style.display = 'none';
+        const bgMusic = document.getElementById('bgMusic');
+        if (bgMusic) bgMusic.pause();
     }
 
     function startGame() {
-        menuScreen.style.display = 'none';
-        gameScreen.style.display = 'flex';
-        restartgame();
+    menuScreen.style.display = 'none';
+    gameScreen.style.display = 'flex';
+    
+    const bgMusic = document.getElementById('bgMusic');
+    if (bgMusic) {
+        // Устанавливаем громкость из ползунка
+        const musicVolInput = document.getElementById('musicVolume');
+        bgMusic.volume = (musicVolInput ? musicVolInput.value : 50) / 100;
+        
+        // Пытаемся запустить
+        bgMusic.play().catch(e => {
+            console.log("Ждем первого клика для запуска музыки");
+            // Если браузер заблокировал, запустим при первом нажатии клавиши
+            document.addEventListener('keydown', () => bgMusic.play(), { once: true });
+        });
     }
-
+    restartgame();
+}
     playButton.addEventListener('click', startGame);
     menuButton.addEventListener('click', showMenu);
 
@@ -107,7 +154,9 @@ document.addEventListener('DOMContentLoaded', () => {
             HighScore = currentscore;
             HighScoreElement.textContent = HighScore;
             localStorage.setItem('2048-HighScore', HighScore);
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
             playSound('win');
         }
     }
@@ -130,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < SIZE; i++) {
             for (let j = 0; j < SIZE; j++) {
                 const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                if (!cell) continue;
+                if (!cell || !board[i]) continue;
 
                 const currentValue = board[i][j];
                 const prevValue = cell.dataset.value ? parseInt(cell.dataset.value) : 0;
@@ -140,9 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     cell.dataset.value = currentValue;
 
                     if (prevValue !== currentValue && !cell.classList.contains('new-tile')) {
-                        if (prevValue !== 0) {
-                            // Анимация слияния будет добавлена отдельно в move
-                        } else {
+                        if (prevValue === 0) {
                             cell.classList.add('new-tile');
                         }
                     }
@@ -165,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const available = [];
         for (let i = 0; i < SIZE; i++) {
             for (let j = 0; j < SIZE; j++) {
-                if (board[i][j] === 0) available.push({ row: i, col: j });
+                if (board[i] && board[i][j] === 0) available.push({ row: i, col: j });
             }
         }
         if (available.length === 0) return false;
@@ -182,36 +229,40 @@ document.addEventListener('DOMContentLoaded', () => {
             const up = (dir === 'arrowup' || dir === 'w');
             for (let j = 0; j < SIZE; j++) {
                 const oldCol = [];
-                for (let i = 0; i < SIZE; i++) oldCol.push(board[i][j]);
+                for (let i = 0; i < SIZE; i++) {
+                    if (board[i]) oldCol.push(board[i][j]);
+                }
                 const newCol = transform(oldCol, up);
                 for (let i = 0; i < SIZE; i++) {
-                    if (board[i][j] !== newCol[i]) hasChanged = true;
-                    board[i][j] = newCol[i];
+                    if (board[i] && board[i][j] !== newCol[i]) hasChanged = true;
+                    if (board[i]) board[i][j] = newCol[i];
                 }
+                
                 for (let i = 0; i < SIZE; i++) {
+                    const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+                    if (!cell) continue;
                     if (oldCol[i] !== 0 && newCol[i] === 0) {
-                        const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                        if (cell) cell.classList.add('merge-source');
+                        cell.classList.add('merge-source');
                     } else if (newCol[i] > oldCol[i] && oldCol[i] !== 0) {
-                        const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                        if (cell) cell.classList.add('merge-target');
+                        cell.classList.add('merge-target');
                     }
                 }
             }
         } else {
             const left = (dir === 'arrowleft' || dir === 'a');
             for (let i = 0; i < SIZE; i++) {
+                if (!board[i]) continue;
                 const oldRow = [...board[i]];
                 const newRow = transform(oldRow, left);
                 if (oldRow.join(',') !== newRow.join(',')) hasChanged = true;
                 board[i] = newRow;
                 for (let j = 0; j < SIZE; j++) {
+                    const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+                    if (!cell) continue;
                     if (oldRow[j] !== 0 && newRow[j] === 0) {
-                        const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                        if (cell) cell.classList.add('merge-source');
+                        cell.classList.add('merge-source');
                     } else if (newRow[j] > oldRow[j] && oldRow[j] !== 0) {
-                        const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-                        if (cell) cell.classList.add('merge-target');
+                        cell.classList.add('merge-target');
                     }
                 }
             }
@@ -247,19 +298,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkGameOver() {
         for (let i = 0; i < SIZE; i++) {
             for (let j = 0; j < SIZE; j++) {
+                if (!board[i]) continue;
                 if (board[i][j] === 0) return false;
-                if (i < SIZE - 1 && board[i][j] === board[i + 1][j]) return false;
+                if (i < SIZE - 1 && board[i+1] && board[i][j] === board[i + 1][j]) return false;
                 if (j < SIZE - 1 && board[i][j] === board[i][j + 1]) return false;
             }
         }
-        gameOverElem.style.display = 'flex';
+        if (gameOverElem) gameOverElem.style.display = 'flex';
         return true;
     }
 
-    // Исправленный обработчик клавиш (поддержка русских букв)
     document.addEventListener('keydown', event => {
+        if (gameScreen.style.display === 'none') return;
         const key = event.key.toLowerCase();
-        if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', 'ц', 'ф', 'ы', 'в'].includes(key)) {
+        const validKeys = ['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd', 'ц', 'ф', 'ы', 'в'];
+        if (validKeys.includes(key)) {
             event.preventDefault();
             let moveKey = key;
             if (key === 'ц') moveKey = 'w';
@@ -295,37 +348,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     restartBtn?.addEventListener('click', showMenu);
     restartGameBtn?.addEventListener('click', () => {
-        gameOverElem.style.display = 'none';
+        if (gameOverElem) gameOverElem.style.display = 'none';
         restartgame();
     });
 
-    function playSound(type) {
-        const vol = parseFloat(document.getElementById('sfxVolume').value) / 100;
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        oscillator.type = 'sine';
-        oscillator.frequency.value = type === 'move' ? 300 : (type === 'merge' ? 600 : 800);
-        gainNode.gain.value = vol * 0.2;
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.1);
+    const musicVolEl = document.getElementById('musicVolume');
+    if (musicVolEl) {
+        musicVolEl.addEventListener('input', e => {
+            const vol = e.target.value / 100;
+            localStorage.setItem('musicVol', e.target.value);
+            const bgMusic = document.getElementById('bgMusic');
+            if (bgMusic) bgMusic.volume = vol;
+        });
+        musicVolEl.value = localStorage.getItem('musicVol') || 50;
     }
 
-    document.getElementById('musicVolume').addEventListener('input', e => {
-        localStorage.setItem('musicVol', e.target.value);
-    });
-    document.getElementById('sfxVolume').addEventListener('input', e => {
-        localStorage.setItem('sfxVol', e.target.value);
-    });
-
-    document.getElementById('musicVolume').value = localStorage.getItem('musicVol') || 50;
-    document.getElementById('sfxVolume').value = localStorage.getItem('sfxVol') || 50;
+    const sfxVolEl = document.getElementById('sfxVolume');
+    if (sfxVolEl) {
+        sfxVolEl.addEventListener('input', e => {
+            localStorage.setItem('sfxVol', e.target.value);
+        });
+        sfxVolEl.value = localStorage.getItem('sfxVol') || 50;
+    }
 
     document.querySelector('.settings-button').addEventListener('click', () => {
         document.querySelector('.settings-panel').classList.toggle('show');
     });
+
+    const bgMusicFinal = document.getElementById('bgMusic');
+    if (bgMusicFinal) {
+        const savedMusicVol = localStorage.getItem('musicVol') || 50;
+        bgMusicFinal.volume = savedMusicVol / 100;
+    }
 
     showMenu();
 });
