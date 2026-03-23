@@ -2,12 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const SIZE = 4;
     let board = [];
     let currentscore = 0;
+    let gameActive = false;
 
     const menuScreen = document.querySelector('.menu-screen');
     const gameScreen = document.querySelector('.game-screen');
     const themeButtons = document.querySelectorAll('.theme-selector button');
     const playButton = document.querySelector('.play-button');
-    const menuButton = document.querySelector('.menu-button');
+    const continueButton = document.querySelector('.continue-button');
+    const menuButtonIcon = document.querySelector('.menu-button-icon');
     
     const currScoreElement = document.querySelector('.current-score');
     const HighScoreElement = document.querySelector('.High-Score');
@@ -22,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function playSound(type) {
         const sfxVolInput = document.getElementById('sfxVolume');
         const vol = sfxVolInput ? parseFloat(sfxVolInput.value) / 100 : 0.5;
-        
         try {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
@@ -30,17 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             oscillator.type = 'sine';
-            
             if (type === 'move') oscillator.frequency.value = 300;
             else if (type === 'merge') oscillator.frequency.value = 600;
             else if (type === 'win') oscillator.frequency.value = 800;
-            
             gainNode.gain.value = vol * 0.2;
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.1);
-        } catch (e) {
-            console.log('AudioContext blocked or failed');
-        }
+        } catch (e) {}
     }
 
     document.addEventListener('keydown', function initAudio() {
@@ -48,104 +45,142 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('keydown', initAudio);
     }, { once: true });
 
-    const themes = {
-        default: {
-            bg: 'rgb(71, 8, 100)',
-            cell: 'rgb(200, 100, 180)',
-            container: '#3d1a33',
-            text: 'white',
-            mergeColor: '#ffb3ff',
-            buttonBg: '#4a1a6b',
-            buttonHover: '#6a2a8b'
-        },
-        animals: {
-            bg: '#2d5e3b',
-            cell: '#8b5a2b',
-            container: '#5d3a1a',
-            text: '#f9e0a0',
-            mergeColor: '#dbb47a',
-            buttonBg: '#3d6b4d',
-            buttonHover: '#5d8b6d'
-        },
-        food: {
-            bg: '#9f5f5f',
-            cell: '#f28b42',
-            container: '#b35e2e',
-            text: '#fff5e0',
-            mergeColor: '#ffb347',
-            buttonBg: '#b35e2e',
-            buttonHover: '#d37e4e'
-        },
-        soft: {
-            bg: '#5e4b8c',
-            cell: '#b48cb3',
-            container: '#8a6d8a',
-            text: '#fbeaff',
-            mergeColor: '#d9b3ff',
-            buttonBg: '#5e4b8c',
-            buttonHover: '#7e6bac'
-        }
-    };
-
     function setTheme(themeName) {
-        const t = themes[themeName];
-        if (!t) return;
-        document.body.style.backgroundColor = t.bg;
-        const container = document.querySelector('.game-container');
-        if (container) container.style.backgroundColor = t.container;
-        
-        document.querySelectorAll('.grid-cell').forEach(cell => {
-            cell.style.backgroundColor = t.cell;
-            cell.style.color = t.text;
-        });
-        document.documentElement.style.setProperty('--merge-color', t.mergeColor);
-        document.documentElement.style.setProperty('--button-bg', t.buttonBg);
-        document.documentElement.style.setProperty('--button-hover', t.buttonHover);
+        document.body.classList.remove('theme-default', 'theme-animals', 'theme-food', 'theme-soft');
+        document.body.classList.add(`theme-${themeName}`);
         localStorage.setItem('2048-theme', themeName);
     }
 
     const savedTheme = localStorage.getItem('2048-theme') || 'default';
     setTheme(savedTheme);
 
-    document.querySelector('.themes-toggle').addEventListener('click', () => {
-        document.querySelector('.theme-selector').classList.toggle('show');
+    const themeToggle = document.querySelector('.themes-toggle');
+    const themeMenu = document.querySelector('.theme-selector');
+    const skinsToggle = document.querySelector('.skins-toggle');
+    const skinsMenu = document.querySelector('.skins-selector');
+
+    function closeAllDropdowns() {
+        themeMenu.classList.remove('show');
+        skinsMenu.classList.remove('show');
+    }
+
+    themeToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = themeMenu.classList.contains('show');
+        closeAllDropdowns();
+        if (!isOpen) themeMenu.classList.add('show');
     });
+
+    skinsToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = skinsMenu.classList.contains('show');
+        closeAllDropdowns();
+        if (!isOpen) skinsMenu.classList.add('show');
+    });
+
+    document.addEventListener('click', () => closeAllDropdowns());
 
     themeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             setTheme(btn.dataset.theme);
-            document.querySelector('.theme-selector').classList.remove('show');
+            closeAllDropdowns();
         });
     });
 
+    const skinButtons = document.querySelectorAll('.skins-selector button');
+    function setSkin(skinName) {
+        document.body.classList.remove('skin-harlamov', 'skin-burmalda', 'skin-vb', 'skin-girl');
+        if (skinName && skinName !== 'default') {
+            document.body.classList.add(`skin-${skinName}`);
+            localStorage.setItem('2048-skin', skinName);
+        } else {
+            localStorage.removeItem('2048-skin');
+        }
+    }
+
+    const savedSkin = localStorage.getItem('2048-skin');
+    if (savedSkin) setSkin(savedSkin);
+
+    skinButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            setSkin(btn.dataset.skin);
+            closeAllDropdowns();
+        });
+    });
+
+    function saveGameState() {
+        const state = {
+            board: board,
+            score: currentscore,
+            highScore: HighScore
+        };
+        localStorage.setItem('2048-saved-game', JSON.stringify(state));
+    }
+
+    function loadGameState() {
+        const saved = localStorage.getItem('2048-saved-game');
+        if (saved) {
+            try {
+                const state = JSON.parse(saved);
+                board = state.board;
+                currentscore = state.score;
+                if (state.highScore > HighScore) {
+                    HighScore = state.highScore;
+                    HighScoreElement.textContent = HighScore;
+                    localStorage.setItem('2048-HighScore', HighScore);
+                }
+                currScoreElement.textContent = currentscore;
+                renderBoard();
+                return true;
+            } catch(e) {}
+        }
+        return false;
+    }
+
+    function clearSavedGame() {
+        localStorage.removeItem('2048-saved-game');
+    }
+
     function showMenu() {
+        if (gameActive) {
+            saveGameState();
+            gameActive = false;
+        }
         menuScreen.style.display = 'block';
         gameScreen.style.display = 'none';
         const bgMusic = document.getElementById('bgMusic');
         if (bgMusic) bgMusic.pause();
+        
+        const hasSaved = localStorage.getItem('2048-saved-game') !== null;
+        continueButton.style.display = hasSaved ? 'block' : 'none';
     }
 
-    function startGame() {
-    menuScreen.style.display = 'none';
-    gameScreen.style.display = 'flex';
-    
-    const bgMusic = document.getElementById('bgMusic');
-    if (bgMusic) {
-        // Устанавливаем громкость из ползунка
-        const musicVolInput = document.getElementById('musicVolume');
-        bgMusic.volume = (musicVolInput ? musicVolInput.value : 50) / 100;
+    function startGame(resume = false) {
+        menuScreen.style.display = 'none';
+        gameScreen.style.display = 'flex';
+        gameActive = true;
         
-        // Пытаемся запустить
-        bgMusic.play().catch(e => {
-            console.log("Ждем первого клика для запуска музыки");
-            // Если браузер заблокировал, запустим при первом нажатии клавиши
-            document.addEventListener('keydown', () => bgMusic.play(), { once: true });
-        });
+        const bgMusic = document.getElementById('bgMusic');
+        if (bgMusic) {
+            const musicVolInput = document.getElementById('musicVolume');
+            bgMusic.volume = (musicVolInput ? musicVolInput.value : 50) / 100;
+            bgMusic.play().catch(e => {});
+        }
+        
+        const settingsPanel = document.querySelector('.settings-panel');
+        settingsPanel.classList.remove('show');
+        
+        if (resume) {
+            loadGameState();
+        } else {
+            clearSavedGame();
+            restartgame();
+        }
     }
-    restartgame();
-}
-    playButton.addEventListener('click', startGame);
-    menuButton.addEventListener('click', showMenu);
+
+    playButton.addEventListener('click', () => startGame(false));
+    continueButton.addEventListener('click', () => startGame(true));
+    menuButtonIcon.addEventListener('click', showMenu);
 
     function updatescore(value) {
         currentscore += value;
@@ -180,14 +215,11 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let j = 0; j < SIZE; j++) {
                 const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
                 if (!cell || !board[i]) continue;
-
                 const currentValue = board[i][j];
                 const prevValue = cell.dataset.value ? parseInt(cell.dataset.value) : 0;
-
                 if (currentValue !== 0) {
                     cell.textContent = currentValue;
                     cell.dataset.value = currentValue;
-
                     if (prevValue !== currentValue && !cell.classList.contains('new-tile')) {
                         if (prevValue === 0) {
                             cell.classList.add('new-tile');
@@ -237,7 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (board[i] && board[i][j] !== newCol[i]) hasChanged = true;
                     if (board[i]) board[i][j] = newCol[i];
                 }
-                
                 for (let i = 0; i < SIZE; i++) {
                     const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
                     if (!cell) continue;
@@ -352,6 +383,12 @@ document.addEventListener('DOMContentLoaded', () => {
         restartgame();
     });
 
+    function toggleSettings() {
+        document.querySelector('.settings-panel').classList.toggle('show');
+    }
+
+    document.querySelector('.menu-screen .settings-button').addEventListener('click', toggleSettings);
+
     const musicVolEl = document.getElementById('musicVolume');
     if (musicVolEl) {
         musicVolEl.addEventListener('input', e => {
@@ -370,10 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         sfxVolEl.value = localStorage.getItem('sfxVol') || 50;
     }
-
-    document.querySelector('.settings-button').addEventListener('click', () => {
-        document.querySelector('.settings-panel').classList.toggle('show');
-    });
 
     const bgMusicFinal = document.getElementById('bgMusic');
     if (bgMusicFinal) {
