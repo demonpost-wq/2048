@@ -433,50 +433,54 @@ body.theme-soft .grid-cell {
     color: #fbeaff;
 }
 
-body.skin-harlamov .grid-cell[data-value="2"] { background-color: #ffcccc; }
-body.skin-harlamov .grid-cell[data-value="4"] { background-color: #ffb3b3; }
-body.skin-harlamov .grid-cell[data-value="8"] { background-color: #ff9999; }
-body.skin-harlamov .grid-cell[data-value="16"] { background-color: #ff8080; }
-body.skin-harlamov .grid-cell[data-value="32"] { background-color: #ff6666; }
-body.skin-harlamov .grid-cell[data-value="64"] { background-color: #ff4d4d; }
-body.skin-harlamov .grid-cell[data-value="128"] { background-color: #ff3333; }
-body.skin-harlamov .grid-cell[data-value="256"] { background-color: #ff1a1a; }
-body.skin-harlamov .grid-cell[data-value="512"] { background-color: #ff0000; }
-body.skin-harlamov .grid-cell[data-value="1024"] { background-color: #cc0000; }
-body.skin-harlamov .grid-cell[data-value="2048"] { background-color: #990000; }
+/* СКИН: Гарик Харламов */
+body.skin-harlamov .grid-cell[data-value="2"] { background-image: url('/images/skins/harlamov/2.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="4"] { background-image: url('/images/skins/harlamov/4.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="8"] { background-image: url('/images/skins/harlamov/8.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="16"] { background-image: url('/images/skins/harlamov/16.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="32"] { background-image: url('/images/skins/harlamov/32.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="64"] { background-image: url('/images/skins/harlamov/64.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="128"] { background-image: url('/images/skins/harlamov/128.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="256"] { background-image: url('/images/skins/harlamov/256.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="512"] { background-image: url('/images/skins/harlamov/512.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="1024"] { background-image: url('/images/skins/harlamov/1024.png'); background-color: transparent; }
+body.skin-harlamov .grid-cell[data-value="2048"] { background-image: url('/images/skins/harlamov/2048.png'); background-color: transparent; }
 
-body.skin-burmalda .grid-cell[data-value="2"] { background-color: #ccffcc; }
-body.skin-burmalda .grid-cell[data-value="4"] { background-color: #b3ffb3; }
-body.skin-burmalda .grid-cell[data-value="8"] { background-color: #99ff99; }
-body.skin-burmalda .grid-cell[data-value="16"] { background-color: #80ff80; }
-body.skin-burmalda .grid-cell[data-value="32"] { background-color: #66ff66; }
-body.skin-burmalda .grid-cell[data-value="64"] { background-color: #4dff4d; }
-body.skin-burmalda .grid-cell[data-value="128"] { background-color: #33ff33; }
-body.skin-burmalda .grid-cell[data-value="256"] { background-color: #1aff1a; }
-body.skin-burmalda .grid-cell[data-value="512"] { background-color: #00ff00; }
-body.skin-burmalda .grid-cell[data-value="1024"] { background-color: #00cc00; }
-body.skin-burmalda .grid-cell[data-value="2048"] { background-color: #009900; }
+/* СКИН: Бурмалдачность */
+body.skin-burmalda .grid-cell[data-value="2"] { background-image: url('/images/skins/burmalda/2.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="4"] { background-image: url('/images/skins/burmalda/4.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="8"] { background-image: url('/images/skins/burmalda/8.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="16"] { background-image: url('/images/skins/burmalda/16.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="32"] { background-image: url('/images/skins/burmalda/32.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="64"] { background-image: url('/images/skins/burmalda/64.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="128"] { background-image: url('/images/skins/burmalda/128.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="256"] { background-image: url('/images/skins/burmalda/256.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="512"] { background-image: url('/images/skins/burmalda/512.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="1024"] { background-image: url('/images/skins/burmalda/1024.png'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="2048"] { background-image: url('/images/skins/burmalda/2048.png'); background-color: transparent; }
 
-body.skin-vb .grid-cell[data-value="2"] { background-color: #ccccff; }
-body.skin-vb .grid-cell[data-value="4"] { background-color: #b3b3ff; }
-body.skin-vb .grid-cell[data-value="8"] { background-color: #9999ff; }
-body.skin-vb .grid-cell[data-value="16"] { background-color: #8080ff; }
-body.skin-vb .grid-cell[data-value="32"] { background-color: #6666ff; }
-body.skin-vb .grid-cell[data-value="64"] { background-color: #4d4dff; }
-body.skin-vb .grid-cell[data-value="128"] { background-color: #3333ff; }
-body.skin-vb .grid-cell[data-value="256"] { background-color: #1a1aff; }
-body.skin-vb .grid-cell[data-value="512"] { background-color: #0000ff; }
-body.skin-vb .grid-cell[data-value="1024"] { background-color: #0000cc; }
-body.skin-vb .grid-cell[data-value="2048"] { background-color: #000099; }
+/* СКИН: Вб-монстр */
+body.skin-vb .grid-cell[data-value="2"] { background-image: url('/images/skins/vb/2.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="4"] { background-image: url('/images/skins/vb/4.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="8"] { background-image: url('/images/skins/vb/8.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="16"] { background-image: url('/images/skins/vb/16.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="32"] { background-image: url('/images/skins/vb/32.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="64"] { background-image: url('/images/skins/vb/64.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="128"] { background-image: url('/images/skins/vb/128.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="256"] { background-image: url('/images/skins/vb/256.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="512"] { background-image: url('/images/skins/vb/512.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="1024"] { background-image: url('/images/skins/vb/1024.png'); background-color: transparent; }
+body.skin-vb .grid-cell[data-value="2048"] { background-image: url('/images/skins/vb/2048.png'); background-color: transparent; }
 
-body.skin-girl .grid-cell[data-value="2"] { background-color: #ffccff; }
-body.skin-girl .grid-cell[data-value="4"] { background-color: #ffb3ff; }
-body.skin-girl .grid-cell[data-value="8"] { background-color: #ff99ff; }
-body.skin-girl .grid-cell[data-value="16"] { background-color: #ff80ff; }
-body.skin-girl .grid-cell[data-value="32"] { background-color: #ff66ff; }
-body.skin-girl .grid-cell[data-value="64"] { background-color: #ff4dff; }
-body.skin-girl .grid-cell[data-value="128"] { background-color: #ff33ff; }
-body.skin-girl .grid-cell[data-value="256"] { background-color: #ff1aff; }
-body.skin-girl .grid-cell[data-value="512"] { background-color: #ff00ff; }
-body.skin-girl .grid-cell[data-value="1024"] { background-color: #cc00cc; }
-body.skin-girl .grid-cell[data-value="2048"] { background-color: #990099; }
+/* СКИН: Девушка */
+body.skin-girl .grid-cell[data-value="2"] { background-image: url('/images/skins/girl/2.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="4"] { background-image: url('/images/skins/girl/4.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="8"] { background-image: url('/images/skins/girl/8.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="16"] { background-image: url('/images/skins/girl/16.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="32"] { background-image: url('/images/skins/girl/32.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="64"] { background-image: url('/images/skins/girl/64.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="128"] { background-image: url('/images/skins/girl/128.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="256"] { background-image: url('/images/skins/girl/256.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="512"] { background-image: url('/images/skins/girl/512.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="1024"] { background-image: url('/images/skins/girl/1024.png'); background-color: transparent; }
+body.skin-girl .grid-cell[data-value="2048"] { background-image: url('/images/skins/girl/2048.png'); background-color: transparent; }
