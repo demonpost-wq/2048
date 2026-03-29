@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <title>2048</title>
+    <title>2048 Cosmic Edition</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    
   <script type="module" crossorigin src="/2048/assets/index-gv_AQJ8E.js"></script>
   <link rel="stylesheet" crossorigin href="/2048/assets/index-XlyKSLnJ.css">
 </head>
-<body>
+<body class="theme-default">
+    <div class="background-layer"></div>
+
     <div class="menu-screen">
         <h1>2048</h1>
         <div class="controls-area">
@@ -34,6 +38,7 @@
         <button class="play-button">Играть</button>
         <button class="continue-button" style="display: none;">Продолжить</button>
         <button class="settings-button">⚙️</button>
+        
         <div class="settings-panel">
             <label>Музыка <input type="range" id="musicVolume" min="0" max="100" value="50"></label>
             <label>Звуки <input type="range" id="sfxVolume" min="0" max="100" value="50"></label>
@@ -46,6 +51,7 @@
             <div class="score-box">Рекорд <span class="High-Score">0</span></div>
             <button class="menu-button-icon">☰</button>
         </div>
+
         <div class="game-container">
             <div class="game-grid">
                 <div class="grid-cell" data-row="0" data-col="0"></div>
@@ -66,9 +72,10 @@
                 <div class="grid-cell" data-row="3" data-col="3"></div>
             </div>
         </div>
+
         <div class="game-over" style="display: none;">
-            Игра окончена!
-            <div style="display: flex; gap: 15px; justify-content: center;">
+            <h2>Игра окончена!</h2>
+            <div class="game-over-buttons">
                 <button class="restart-game-btn">🔄 Заново</button>
                 <button class="restart-game">🏠 Меню</button>
             </div>
