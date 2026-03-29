@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let HighScore = localStorage.getItem('2048-HighScore') || 0;
     HighScoreElement.textContent = HighScore;
 
-    function playSound(type) {
+function playSound(type) {
     const sfxVol = (localStorage.getItem('sfxVol') || 50) / 100;
     let fileName = '';
 
@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (type === 'merge') fileName = 'merge.mp3';
     else if (type === 'gameover') fileName = 'gameover.mp3';
 
-    if (fileName) {
-        const audio = new Audio(fileName);
-        audio.volume = sfxVol;
-        audio.play().catch(() => {});
-    }
+if (fileName) {
+    const audio = new Audio(`/${fileName}`); 
+    audio.volume = sfxVol;
+    audio.play().catch((err) => console.error("Ошибка звука:", err));
+}
 }
 
     document.addEventListener('keydown', function initAudio() {

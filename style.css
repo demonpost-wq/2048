@@ -447,7 +447,7 @@ body.skin-harlamov .grid-cell[data-value="1024"] { background-image: url('/image
 body.skin-harlamov .grid-cell[data-value="2048"] { background-image: url('/images/skins/harlamov/2048.png'); background-color: transparent; }
 
 /* СКИН: Бурмалдачность */
-body.skin-burmalda .grid-cell[data-value="2"] { background-image: url('/images/skins/burmalda/2.jpg'); background-color: transparent; }
+body.skin-burmalda .grid-cell[data-value="2"] { background-image: url('/images/skins/burmalda/2.png'); background-color: transparent; }
 body.skin-burmalda .grid-cell[data-value="4"] { background-image: url('/images/skins/burmalda/4.png'); background-color: transparent; }
 body.skin-burmalda .grid-cell[data-value="8"] { background-image: url('/images/skins/burmalda/8.png'); background-color: transparent; }
 body.skin-burmalda .grid-cell[data-value="16"] { background-image: url('/images/skins/burmalda/16.png'); background-color: transparent; }
@@ -483,4 +483,4 @@ body.skin-girl .grid-cell[data-value="128"] { background-image: url('/images/ski
 body.skin-girl .grid-cell[data-value="256"] { background-image: url('/images/skins/girl/256.png'); background-color: transparent; }
 body.skin-girl .grid-cell[data-value="512"] { background-image: url('/images/skins/girl/512.png'); background-color: transparent; }
 body.skin-girl .grid-cell[data-value="1024"] { background-image: url('/images/skins/girl/1024.png'); background-color: transparent; }
-body.skin-girl .grid-cell[data-value="2048"] { background-image: url('/images/skins/girl/2048.png'); background-color: transparentpng; }
+body.skin-girl .grid-cell[data-value="2048"] { background-image: url('/images/skins/girl/2048.png'); background-color: transparent; }
