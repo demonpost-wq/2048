@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <title>2048</title>
+  <link rel="stylesheet" crossorigin href="/2048/assets/index-B1KWpjbD.css">
+</head>
+<body>
+
+    <div class="menu-screen">
+        <h1>2048</h1>
+
+        <div class="controls-area">
+            <div class="dropdown-container">
+                <button class="dropdown-toggle themes-toggle">Темы</button>
+                <div class="dropdown-menu theme-selector">
+                    <button data-theme="default">Космос</button>
+                    <button data-theme="animals">Звери</button>
+                    <button data-theme="food">Еда</button>
+                    <button data-theme="soft">Цветы</button>
+                </div>
+            </div>
+
+            <div class="dropdown-container">
+                <button class="dropdown-toggle skins-toggle">Скины</button>
+                <div class="dropdown-menu skins-selector">
+                    <button data-skin="harlamov">Гарик Харламов</button>
+                    <button data-skin="burmalda">Бурмалдачность</button>
+                    <button data-skin="vb">Вб-монстр</button>
+                    <button data-skin="girl">Девушка</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="play-button">Играть</button>
+        <button class="continue-button" style="display: none;">Продолжить</button>
+
+        <button class="settings-button">⚙️</button>
+        <div class="settings-panel">
+            <label>Музыка <input type="range" id="musicVolume" min="0" max="100" value="50"></label>
+            <label>Звуки <input type="range" id="sfxVolume" min="0" max="100" value="50"></label>
+        </div>
+    </div>
+
+    <div class="game-screen" style="display: none;">
+        <div class="score-container">
+            <div class="score-box">Счёт <span class="current-score">0</span></div>
+            <div class="score-box">Рекорд <span class="High-Score">0</span></div>
+            <button class="menu-button-icon">☰</button>
+        </div>
+
+        <div class="game-container">
+            <div class="game-grid">             
+                <div class="grid-cell" data-row="0" data-col="0"></div>
+                <div class="grid-cell" data-row="0" data-col="1"></div>
+                <div class="grid-cell" data-row="0" data-col="2"></div>
+                <div class="grid-cell" data-row="0" data-col="3"></div>
+                <div class="grid-cell" data-row="1" data-col="0"></div>
+                <div class="grid-cell" data-row="1" data-col="1"></div>
+                <div class="grid-cell" data-row="1" data-col="2"></div>
+                <div class="grid-cell" data-row="1" data-col="3"></div>
+                <div class="grid-cell" data-row="2" data-col="0"></div>
+                <div class="grid-cell" data-row="2" data-col="1"></div>
+                <div class="grid-cell" data-row="2" data-col="2"></div>
+                <div class="grid-cell" data-row="2" data-col="3"></div>
+                <div class="grid-cell" data-row="3" data-col="0"></div>
+                <div class="grid-cell" data-row="3" data-col="1"></div>
+                <div class="grid-cell" data-row="3" data-col="2"></div>
+                <div class="grid-cell" data-row="3" data-col="3"></div>
+            </div>
+        </div>
+
+        <div class="game-over">
+            Игра окончена!
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="restart-game-btn">🔄 Заново</button>
+                <button class="restart-game">🏠 Меню</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <script src="main.js"></script>
+    <audio id="bgMusic" src="mice-on-venus.mp3" loop></audio>
+</body>
+</html>
