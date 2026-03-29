@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const playButton = document.querySelector('.play-button');
     const continueButton = document.querySelector('.continue-button');
     const menuButtonIcon = document.querySelector('.menu-button-icon');
-    
     const currScoreElement = document.querySelector('.current-score');
     const HighScoreElement = document.querySelector('.High-Score');
     const gameGrid = document.querySelector('.game-grid');
@@ -22,26 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
     HighScoreElement.textContent = HighScore;
 
     function playSound(type) {
-        const sfxVolInput = document.getElementById('sfxVolume');
-        const vol = sfxVolInput ? parseFloat(sfxVolInput.value) / 100 : 0.5;
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.type = 'sine';
-            if (type === 'move') oscillator.frequency.value = 300;
-            else if (type === 'merge') oscillator.frequency.value = 600;
-            else if (type === 'win') oscillator.frequency.value = 800;
-            gainNode.gain.value = vol * 0.2;
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.1);
-        } catch (e) {}
+    const sfxVol = (localStorage.getItem('sfxVol') || 50) / 100;
+    let fileName = '';
+
+    if (type === 'move') fileName = 'move.mp3';
+    else if (type === 'merge') fileName = 'merge.mp3';
+    else if (type === 'gameover') fileName = 'gameover.mp3';
+
+    if (fileName) {
+        const audio = new Audio(fileName);
+        audio.volume = sfxVol;
+        audio.play().catch(() => {});
     }
+}
 
     document.addEventListener('keydown', function initAudio() {
-        playSound('move');
         document.removeEventListener('keydown', initAudio);
     }, { once: true });
 
@@ -192,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             }
-            playSound('win');
         }
     }
 
@@ -316,8 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newLine[i] === newLine[i + 1]) {
                 newLine[i] *= 2;
                 updatescore(newLine[i]);
-                newLine.splice(i + 1, 1);
                 playSound('merge');
+                newLine.splice(i + 1, 1);
             }
         }
 
@@ -335,7 +328,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (j < SIZE - 1 && board[i][j] === board[i][j + 1]) return false;
             }
         }
-        if (gameOverElem) gameOverElem.style.display = 'flex';
+        if (gameOverElem) 
+            playSound('gameover');
+            gameOverElem.style.display = 'flex';
         return true;
     }
 
@@ -415,4 +410,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     showMenu();
-});
+}); 
