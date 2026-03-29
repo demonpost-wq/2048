@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2048 Cosmic Edition</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    
-  <script type="module" crossorigin src="/2048/assets/index-gv_AQJ8E.js"></script>
-  <link rel="stylesheet" crossorigin href="/2048/assets/index-XlyKSLnJ.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/2048/assets/index-BFnmotjP.js"></script>
+  <link rel="stylesheet" crossorigin href="/2048/assets/index-Cw4OrR_q.css">
 </head>
 <body class="theme-default">
-    <div class="background-layer"></div>
-
     <div class="menu-screen">
         <h1>2048</h1>
         <div class="controls-area">
@@ -38,10 +35,14 @@
         <button class="play-button">Играть</button>
         <button class="continue-button" style="display: none;">Продолжить</button>
         <button class="settings-button">⚙️</button>
-        
+
         <div class="settings-panel">
-            <label>Музыка <input type="range" id="musicVolume" min="0" max="100" value="50"></label>
-            <label>Звуки <input type="range" id="sfxVolume" min="0" max="100" value="50"></label>
+            <label>Музыка
+                <input type="range" id="musicVolume" min="0" max="100" value="50">
+            </label>
+            <label>Звуки
+                <input type="range" id="sfxVolume" min="0" max="100" value="50">
+            </label>
         </div>
     </div>
 
@@ -58,14 +59,17 @@
                 <div class="grid-cell" data-row="0" data-col="1"></div>
                 <div class="grid-cell" data-row="0" data-col="2"></div>
                 <div class="grid-cell" data-row="0" data-col="3"></div>
+
                 <div class="grid-cell" data-row="1" data-col="0"></div>
                 <div class="grid-cell" data-row="1" data-col="1"></div>
                 <div class="grid-cell" data-row="1" data-col="2"></div>
                 <div class="grid-cell" data-row="1" data-col="3"></div>
+
                 <div class="grid-cell" data-row="2" data-col="0"></div>
                 <div class="grid-cell" data-row="2" data-col="1"></div>
                 <div class="grid-cell" data-row="2" data-col="2"></div>
                 <div class="grid-cell" data-row="2" data-col="3"></div>
+
                 <div class="grid-cell" data-row="3" data-col="0"></div>
                 <div class="grid-cell" data-row="3" data-col="1"></div>
                 <div class="grid-cell" data-row="3" data-col="2"></div>
@@ -83,7 +87,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-    
-    <audio id="bgMusic" src="/2048/mice-on-venus.mp3" loop></audio>
+
+    <audio id="bgMusic" src="./mice-on-venus.mp3" loop></audio>
 </body>
 </html>
